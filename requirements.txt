@@ -1,2 +1,10 @@
-sherlock-project
 requests
+colorama
+stem
+socks
+beautifulsoup4
+lxml
+fake-useragent
+html5lib
+dnspython
+certifi
