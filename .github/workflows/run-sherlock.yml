@@ -25,9 +25,10 @@ jobs:
 
       - name: Run Sherlock
         run: |
-          # Запускаем локальный скрипт из папки sherlock и сохраняем результат в корень
           python sherlock/sherlock.py "${{ github.event.client_payload.username }}" --print-found --output result.json || true
-
+          # Посмотрим список файлов в папке, чтобы найти, куда он записался
+          ls -la
+          
       - name: Commit and push results
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
