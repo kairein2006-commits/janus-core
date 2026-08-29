@@ -8,7 +8,7 @@ jobs:
   osint:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Право на запись обратно в репозиторий
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -28,9 +28,7 @@ jobs:
           python -m sherlock "${{ github.event.client_payload.username }}" --print-found --output result.json || true
 
       - name: Commit and push results
-        run: |
-          git config --global user.name "Janus Bot"
-          git config --global user.email "bot@janus.local"
-          git add result.json
-          git commit -m "Auto: Update OSINT results for ${{ github.event.client_payload.username }}" || echo "No changes to commit"
-          git push
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Auto: Update OSINT results for ${{ github.event.client_payload.username }}"
+          file_pattern: result.json
