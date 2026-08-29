@@ -21,14 +21,13 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install sherlock-project requests
 
       - name: Run Sherlock
         run: |
-          python sherlock/sherlock.py "${{ github.event.client_payload.username }}" --print-found --output result.json || true
-          # Посмотрим список файлов в папке, чтобы найти, куда он записался
-          ls -la
-          
+          # Запускаем через модуль, а результат сохраняется прямо в корень
+          python -m sherlock "${{ github.event.client_payload.username }}" --print-found --output result.json || true
+
       - name: Commit and push results
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
