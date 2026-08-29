@@ -7,6 +7,8 @@ on:
 jobs:
   osint:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Право на запись обратно в репозиторий
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,11 +25,12 @@ jobs:
 
       - name: Run Sherlock
         run: |
-          # Запускаем sherlock и сохраняем результаты в текстовый/json файл
           python -m sherlock "${{ github.event.client_payload.username }}" --print-found --output result.json || true
 
-      - name: Upload results as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: osint-result
-          path: result.json
+      - name: Commit and push results
+        run: |
+          git config --global user.name "Janus Bot"
+          git config --global user.email "bot@janus.local"
+          git add result.json
+          git commit -m "Auto: Update OSINT results for ${{ github.event.client_payload.username }}" || echo "No changes to commit"
+          git push
