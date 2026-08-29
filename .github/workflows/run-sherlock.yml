@@ -25,7 +25,8 @@ jobs:
 
       - name: Run Sherlock
         run: |
-          python -m sherlock "${{ github.event.client_payload.username }}" --print-found --output result.json || true
+          # Запускаем локальный скрипт из папки sherlock и сохраняем результат в корень
+          python sherlock/sherlock.py "${{ github.event.client_payload.username }}" --print-found --output result.json || true
 
       - name: Commit and push results
         uses: stefanzweifel/git-auto-commit-action@v5
